@@ -1,5 +1,7 @@
 package br.com.alura.literalura.model;
 
+import br.com.alura.literalura.DTO.DadosLivros;
+
 public class Livros {
     private Long id;
     private String titulo;
@@ -15,7 +17,7 @@ public class Livros {
         this.numeroDownloads = numeroDownloads;
     }
 
-    public Livros(DadosLivro livro) {
+    public Livros(DadosLivros livro) {
         //TODO Auto-generated constructor stub
     }
 
