@@ -1,10 +1,17 @@
 package br.com.alura.literalura.model;
 
-import jakarta.annotation.Generated;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import br.com.alura.literalura.DTO.DadosAutores;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,14 +23,17 @@ public class Autores {
     private String nome;
     private String anoNascimento;
     private String anoFalecimento;
-    private String livro;
 
-    public Autores(Long id, String nome, String anoNascimento, String anoFalecimento, String livro) {
-        this.id = id;
-        this.nome = nome;
-        this.anoNascimento = anoNascimento;
-        this.anoFalecimento = anoFalecimento;
-        this.livro = livro;
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Livros> livros = new ArrayList<>();
+
+    public Autores() {}
+
+    public Autores(DadosAutores dadosAutores) {
+        this.nome = String.valueOf(dadosAutores.autor());
+        this.anoNascimento = String.valueOf(dadosAutores.anoNascimento());
+        this.anoFalecimento = String.valueOf(dadosAutores.anoFalecimento());
+
     }
 
     public Long getId() {
@@ -58,20 +68,20 @@ public class Autores {
         this.anoFalecimento = anoFalecimento;
     }
 
-    public String getLivro() {
-        return livro;
-    }
-
-    public void setLivro(String livro) {
-        this.livro = livro;
+    private List<String> getTitulosDosLivros() {
+        return livros.stream()
+                    .map(Livros::getTitulo)
+                    .collect(Collectors.toList());
     }
 
     @Override
     public String toString() {
-        return "Autor: " + nome + 
-                ", Ano de nascimento: " + anoNascimento + 
-                ", Ano falecimento: " + anoFalecimento + 
-                ", Livros: " + livro;
+        return " --------- Autor ---------- \n" +
+                "Autor: " + nome + 
+                "\n Ano de nascimento: " + anoNascimento + 
+                "\n Ano falecimento: " + anoFalecimento + 
+                "\n Livros: " + getTitulosDosLivros();
+
     }
 
     

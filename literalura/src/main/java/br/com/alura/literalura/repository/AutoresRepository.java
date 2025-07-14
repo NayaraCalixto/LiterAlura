@@ -6,4 +6,6 @@ import br.com.alura.literalura.model.Autores;
 
 public interface AutoresRepository extends JpaRepository<Autores, Long>{
 
+    Autores findByNome(String autor);
+
 }
