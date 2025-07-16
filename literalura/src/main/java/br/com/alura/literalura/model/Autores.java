@@ -24,7 +24,7 @@ public class Autores {
     private String anoNascimento;
     private String anoFalecimento;
 
-    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "autores", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Livros> livros = new ArrayList<>();
 
     public Autores() {}
@@ -76,15 +76,14 @@ public class Autores {
 
     @Override
     public String toString() {
-        return " --------- Autor ---------- \n" +
+        return "****************** Autor *********************\n" +
                 "Autor: " + nome + 
-                "\n Ano de nascimento: " + anoNascimento + 
-                "\n Ano falecimento: " + anoFalecimento + 
-                "\n Livros: " + getTitulosDosLivros();
-
+                "Ano de nascimento: " + anoNascimento + 
+                "Ano falecimento: " + anoFalecimento + 
+                "Livros: " + getTitulosDosLivros() +
+                "*********************************************";
     }
 
-    
     
 }
 
