@@ -77,14 +77,16 @@ public class Autores {
     @Override
     public String toString() {
         return "****************** Autor *********************\n" +
-                "Autor: " + nome + 
-                "Ano de nascimento: " + anoNascimento + 
-                "Ano falecimento: " + anoFalecimento + 
-                "Livros: " + getTitulosDosLivros() +
-                "*********************************************";
+                "Autor: " + nome + "\n" +
+                "Ano de nascimento: " + anoNascimento + "\n" +
+                "Ano falecimento: " + anoFalecimento + "\n" +
+                "Livros: " + getTitulosDosLivros() + "\n" +
+                "**********************************************" + "\n";
     }
 
     
 }
+
+
 
 

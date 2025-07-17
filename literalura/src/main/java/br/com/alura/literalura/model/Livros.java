@@ -1,6 +1,5 @@
 package br.com.alura.literalura.model;
 
-import java.util.stream.Stream;
 
 import br.com.alura.literalura.DTO.DadosLivros;
 import jakarta.persistence.Column;
@@ -88,11 +87,6 @@ public class Livros {
            "Idioma: " + idioma + "\n" +
            "Número de downloads: " + numeroDownloads + "\n" +
            "*********************************************";
-    }
-
-    public Stream<DadosLivros> stream() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'stream'");
     }
 
     

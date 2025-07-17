@@ -3,6 +3,7 @@ package br.com.alura.literalura.principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -51,10 +52,10 @@ public class Principal {
                 2 - Listar livros registrados
                 3 - Listar autores registrados
                 4 - Listar autores vivos em um determinado ano
-                5 - Listar livros em um determinado ano
+                5 - Listar livros em um determinado idioma
 
                 0 - Sair
-                """;
+                \n""";
 
                 System.out.println(menu); 
                 opcao = leitura.nextInt();             
@@ -71,10 +72,10 @@ public class Principal {
                         listarAutoresRegistrados();
                         break;
                     case 4:
-                        listarAutoresVivos();
+                        listarAutoresVivosPorAno();
                         break;
                     case 5:
-                        listarLivrosPorAno();
+                        listarLivrosPorIdioma();
                         break;
                     case 0:
                         System.out.println("Até logo.....");
@@ -153,16 +154,50 @@ public class Principal {
 		.forEach(System.out::println);
     }
 
-    private void listarLivrosPorAno() {
-        
+    private void listarAutoresVivosPorAno() {
+        System.out.println("Digite o ano que deseja buscar:");
+        try {
+            String anoNascimento = leitura.nextLine();
+            List<Autores> autores = autoresRepository.findByAnoNascimento(anoNascimento);
+
+            if (autores.isEmpty()) {
+                System.out.println("Nenhum autor encontrado para o ano " + anoNascimento);
+            } else {
+                autores.forEach(System.out::println);
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Ano inválido. Digite novamente.");
+            leitura.nextLine();
+        }
+    
     }
 
-    private void listarAutoresVivos() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'listarAutoresVivos'");
+    private void listarLivrosPorIdioma() {
+        System.out.println("Digite o idioma desejado (ex: en, pt, fr):");
+        String idioma = leitura.nextLine().trim();
+
+        List<Livros> livros = livrosRepository.findByIdiomaIgnoreCase(idioma);
+
+        if (livros.isEmpty()) {
+            System.out.println("Nenhum livro encontrado para o idioma.");
+        } else {
+            livros.forEach(System.out::println);
+        }
     }
+
+
+        
+
+        
 
     
 
+
 }
+
+    
+
+    
+
+
 
