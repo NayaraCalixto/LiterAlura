@@ -41,24 +41,25 @@ public class Principal {
         this.autoresRepository = autoresRepository;
     }
 
-    public void exibirMenu(){
+    public void exibirMenu() {
         var opcao = -1;
-        while(opcao != 0){
-            var menu = """
-                ##################################################
-                Escolha o número de sua opção:
+        while (opcao != 0) {
+            try {
+                var menu = """
+                        ##################################################
+                        Escolha o número de sua opção:
 
-                1 - Buscar livro pelo título
-                2 - Listar livros registrados
-                3 - Listar autores registrados
-                4 - Listar autores vivos em um determinado ano
-                5 - Listar livros em um determinado idioma
+                        1 - Buscar livro pelo título
+                        2 - Listar livros registrados
+                        3 - Listar autores registrados
+                        4 - Listar autores vivos em um determinado ano
+                        5 - Listar livros em um determinado idioma
 
-                0 - Sair
-                \n""";
+                        0 - Sair
+                        \n""";
 
-                System.out.println(menu); 
-                opcao = leitura.nextInt();             
+                System.out.println(menu);
+                opcao = leitura.nextInt();
                 leitura.nextLine();
 
                 switch (opcao) {
@@ -83,22 +84,25 @@ public class Principal {
                     default:
                         System.out.println("Digite uma opção válida.");
                         break;
-                    }
-                    
-        }
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor, digite um número.");
+                leitura.nextLine();
+            }
 
+        }
 
     }
 
     private void buscarLivroPorTitulo() {
         DadosLivros dadosLivros = obterDadosLivro();
-        if(dadosLivros != null) {
+        if (dadosLivros != null) {
             DadosAutores dadosAutores = dadosLivros.autor().get(0);
             Livros livros;
             String nomeAutor = dadosAutores.autor().trim().toLowerCase();
             Autores autoresExistentes = autoresRepository.findByNomeIgnoreCase(nomeAutor);
-            if(autoresExistentes != null) {
-               livros = new Livros(dadosLivros, autoresExistentes); 
+            if (autoresExistentes != null) {
+                livros = new Livros(dadosLivros, autoresExistentes);
             } else {
                 Autores novosAutores = new Autores(dadosAutores);
                 autoresRepository.save(novosAutores);
@@ -110,48 +114,46 @@ public class Principal {
             } catch (Exception e) {
                 System.out.println("Livro já consta no banco de dados.");
             }
-        }
-        else {
+        } else {
             System.out.println("Livro não encontrado. Tente outro título.");
-            System.out.println("Resposta da API: " + json);
         }
     }
 
     private DadosLivros obterDadosLivro() {
         System.out.print("Digite o título do livro que você deseja buscar: ");
-        String nomeLivro = leitura.nextLine();
+        String nomeLivro = leitura.nextLine().toLowerCase();
         json = consumoApi.obterDados(ENDERECO + nomeLivro.replace(" ", "%20").trim());
         String[] palavrasChave = nomeLivro.split(" ");
         DadosResultados dadosBusca = converteDados.obterDados(json, DadosResultados.class);
         Optional<DadosLivros> dadosLivros = dadosBusca.resultados().stream()
                 .filter(livro -> {
                     String titulo = livro.titulo();
-                    if (titulo == null) return false;
+                    if (titulo == null)
+                        return false;
                     String tituloNormalizado = titulo.toLowerCase();
                     return Arrays.stream(palavrasChave)
-                     .allMatch(tituloNormalizado::contains);
+                            .allMatch(tituloNormalizado::contains);
                 })
                 .findFirst();
         if (dadosLivros.isPresent()) {
             return dadosLivros.get();
-        }
-        else {
+        } else {
             return null;
         }
     }
 
     private void listarLivrosRegistrados() {
         livros = livrosRepository.findAll();
-	    livros.stream()
-		.sorted(Comparator.comparing(Livros::getTitulo, String.CASE_INSENSITIVE_ORDER))
-		.forEach(System.out::println);
+        livros.stream()
+                .sorted(Comparator.comparing(Livros::getTitulo, String.CASE_INSENSITIVE_ORDER))
+                .forEach(System.out::println);
     }
 
     private void listarAutoresRegistrados() {
         autores = autoresRepository.findAll();
-	    autores.stream()
-		.sorted(Comparator.comparing(Autores::getNome, String.CASE_INSENSITIVE_ORDER))
-		.forEach(System.out::println);
+        autores.stream()
+                .sorted(Comparator.comparing(Autores::getNome, String.CASE_INSENSITIVE_ORDER))
+                .forEach(System.out::println);
     }
 
     private void listarAutoresVivosPorAno() {
@@ -169,35 +171,37 @@ public class Principal {
             System.out.println("Ano inválido. Digite novamente.");
             leitura.nextLine();
         }
-    
+
     }
 
     private void listarLivrosPorIdioma() {
-        System.out.println("Digite o idioma desejado (ex: en, pt, fr):");
-        String idioma = leitura.nextLine().trim();
+        try {
+            var menuIdiomas = """
+                ##################################################
+                Insira o idioma para realizar a busca(ex: es, en, fr, pt):
 
-        List<Livros> livros = livrosRepository.findByIdiomaIgnoreCase(idioma);
+                ES - Espanhol
+                EN - Inglês
+                FR - Francês
+                PT - Português
 
-        if (livros.isEmpty()) {
-            System.out.println("Nenhum livro encontrado para o idioma.");
-        } else {
-            livros.forEach(System.out::println);
+                \n""";
+
+            System.out.println(menuIdiomas);
+            String idioma = leitura.nextLine().trim().toLowerCase();
+
+            List<Livros> livros = livrosRepository.findByIdiomaIgnoreCase(idioma);
+
+            if (livros.isEmpty()) {
+                System.out.println("Nenhum livro encontrado para o idioma.");
+            } else {
+                livros.forEach(System.out::println);
+            }
+
+        } catch (InputMismatchException e) {
+            System.out.println("Digite uma opção válida.");
         }
+        
     }
 
-
-        
-
-        
-
-    
-
-
 }
-
-    
-
-    
-
-
-
