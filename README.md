@@ -2,8 +2,6 @@
 
 <img src="https://img.shields.io/badge/Java-17-007396?style=for-the-badge&logo=java&logoColor=white">
 <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
-<img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white">
-<img src="https://img.shields.io/badge/Gutendex_API-FF6F61?style=for-the-badge">
 <img src="https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=oracle&logoColor=white">
 <img src="https://img.shields.io/badge/Alura-13294B?style=for-the-badge&logo=data:image/svg+xml;base64,...">
 
@@ -23,7 +21,6 @@ O desafio propõe a criação de uma aplicação Java com Spring Boot que permit
 
 ---
 
-
 ## 🛠️ Tecnologias Utilizadas
 
 - **Java 17+**
@@ -38,11 +35,30 @@ O desafio propõe a criação de uma aplicação Java com Spring Boot que permit
 
 ## 🌐 Sobre a API Gutendex
 
-A **Gutendex API** é uma API REST gratuita que fornece acesso a mais de 70.000 livros do Projeto Gutenberg.
+📚 **Gutendex API** é uma interface web que facilita o acesso ao vasto acervo de livros gratuitos do [Project Gutenberg](https://gutendex.com/) — uma biblioteca digital com milhares de obras de domínio público.
+
+### ✨ O que ela faz
+- **Serve metadados de livros** como título, autor, idioma, número de downloads, formatos disponíveis, entre outros.
+- **Permite buscas avançadas** por autor, idioma, ano de nascimento, palavras-chave, temas e muito mais.
+- **Retorna dados em JSON**, ideal para integrar com aplicações web, bots, ou análises automatizadas.
+
+### 🔍 Exemplos de uso
+- Listar livros populares:  
+  `GET https://gutendex.com/books`
+- Buscar por autor ou título:  
+  `GET https://gutendex.com/books?search=shakespeare`
+- Filtrar por idioma:  
+  `GET https://gutendex.com/books?languages=pt`
+
+### 🛠️ Tecnologias
+- Construída com **Django**
+- Utiliza arquivos XML publicados pelo Project Gutenberg e os transforma em uma API REST simples
+
+Se quiser, posso te mostrar como fazer uma requisição usando Python ou integrar com seu projeto Spring. Quer ver um exemplo prático?
 
 ### 🔍 Exemplo de requisição:
 
-
+![](assets/json_api.png)
 
 ---
 
@@ -68,37 +84,37 @@ A **Gutendex API** é uma API REST gratuita que fornece acesso a mais de 70.000 
 ## 🚀 Como a Aplicação Funciona (Passo a Passo)
 
 ### 1. Inicialização
-- Ao rodar a aplicação, um menu interativo é exibido no terminal com as opções disponíveis:
+Ao rodar a aplicação, um menu interativo é exibido no terminal com as opções disponíveis:
 
 ![](assets/menu.png)
 
-- Buscar Livro pelo Título
+Buscar Livro pelo Título: 
 O usuário insere o opção desejada, neste caso, opção 1. 
 Em seguida digitar o nome de um livro, a aplicação faz uma requisição para a API Gutendex, caso o livro seja encontrado, seus dados são salvos no banco de dados. Se o livro não for encontrado, será exibido uma mensagem "Livro não encontrado. Tente outro título.", mas se o livro já estiver salvo no banco de dados, a seguinte mensagem será mostrada "Livro já consta no banco de dados."
 
 ![](assets/resultado_opcao_1.png)
 
- - Listar Livros Registrados
+Listar Livros Registrados: 
 Consulta o banco de dados e exibe todos os livros cadastrados com suas informações principais.
 
 ![](assets/resultado_opcao_2.png)
 
-- Listar Autores Registrados
+Listar Autores Registrados: 
 Mostra todos os autores únicos e exibe os livros associados a cada autor.
 
 ![](assets/resultado_opcao_3.png)
 
-- Buscar Autores Vivos em um Ano
+Buscar Autores Vivos em um Ano: 
 O usuário informa um ano (ex: 1839). A aplicação retorna todos os autores que estavam vivos nesse ano.
 
 ![](assets/resultado_opcao_4.png)
 
-- Listar Livros por Idioma
+Listar Livros por Idioma: 
 O usuário escolhe um idioma (ex: pt). A aplicação filtra os livros registrados nesse idioma. 
 
 ![](assets/resultado_opcao_5.png)
 
-- Sair da aplicação
+Sair da aplicação: 
 Mostra um "Até logo..." ao usuário, assim encerrando a aplicação.
 
 ![](assets/resultado_opcao_0.png)
