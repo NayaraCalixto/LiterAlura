@@ -86,7 +86,7 @@ public class Livros {
            "Autor: " + autores.getNome() + "\n" +
            "Idioma: " + idioma + "\n" +
            "Número de downloads: " + numeroDownloads + "\n" +
-           "*********************************************";
+           "*********************************************" + "\n";
     }
 
     
